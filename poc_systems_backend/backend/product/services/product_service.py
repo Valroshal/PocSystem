@@ -54,7 +54,7 @@ class ProductService(BaseManager):
             product_id: str,
     ):
         try:
-            if not favorite:
+            if favorite is None:
                 raise ValidationError('favorite value not found')
 
             if not product_id:
@@ -91,7 +91,7 @@ class ProductService(BaseManager):
 
     def get_all(self):
         try:
-            # products = super().get(filters=Q(is_deleted=False)).all()
+
             products = Product.objects.all()
 
             if not products:

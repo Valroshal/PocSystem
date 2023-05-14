@@ -1,8 +1,11 @@
 import logging
 
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from django.db import transaction
+from django.contrib.auth.models import User
+from rest_framework import status, request
+from rest_framework.response import Response
+from django.contrib.auth import authenticate
 
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 
 from backend.core.base_manager import BaseManager
 from backend.user.serializers.user_json import UserJson
@@ -18,29 +21,32 @@ class UserService(BaseManager):
             logger.error(str(ex), exc_info=True)
             raise ex
 
-    def get_by_email(
+    def get_by_username(
             self,
-            email: str,
+            username: str,
             password: str,
     ) -> [UserJson, None]:
         try:
-            if email is None:
+            if username is None:
                 raise ValidationError('email is empty')
 
             if password is None:
                 raise ValidationError('password is empty')
 
-            # TODO here user is empty, can't understand what's the problem
-            # user = self.get(
-            #     filters=Q(Q(email=email) & Q(password=password)),
-            # ).all()
+            # Use authenticate() to check the user's credentials
+            user = authenticate(request, username=username, password=password)
 
-            user = User.objects.get(email=email, password=password)
-
-            if not user:
-                raise ValidationError('user does not exist')
-
-            return UserJson.from_model(user)
+            if user is not None:
+                # User exists with the provided credentials
+                # Perform additional actions or redirect to a success page
+                return Response(
+                    status=status.HTTP_200_OK
+                )
+            else:
+                # Invalid credentials or user does not exist
+                return Response(
+                    status=status.HTTP_204_NO_CONTENT
+                )
 
         except ObjectDoesNotExist:
             return None
