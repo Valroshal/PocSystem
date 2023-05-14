@@ -57,27 +57,27 @@ const styles = StyleSheet.create({
   },
 })
 
-const EmailField = ({onChangeEmail}) => {
+const UsernameField = ({onChangeEmail}) => {
   const {handleBlur, handleChange, values, errors, touched } = useFormikContext();
 
   useEffect(() => {
-    onChangeEmail(values.email)
-  },[onChangeEmail, values.email]);
+    onChangeEmail(values.username)
+  },[onChangeEmail, values.username]);
 
   return (
     <View>
       <View
-        style={(errors.email && touched.email) ? styles.fieldError : styles.field}
+        style={(errors.username && touched.username) ? styles.fieldError : styles.field}
       >
         <TextInput
-          placeholder="Email"
-          style={(errors.email && touched.email) ? [styles.inputTextError,{color: '#EC6868'}] : styles.inputText}
-          onChangeText={handleChange('email')}
-          value={values.email}
-          onBlur={handleBlur('email')}
-          keyboardType="email-address"
+          placeholder="Username"
+          style={(errors.username && touched.username) ? [styles.inputTextError,{color: '#EC6868'}] : styles.inputText}
+          onChangeText={handleChange('username')}
+          value={values.username}
+          onBlur={handleBlur('username')}
+          //keyboardType="email-address"
         />
-        {(errors.email && touched.email) && (
+        {(errors.username && touched.username) && (
           <View>
             <Image
               source={Ex}
@@ -86,10 +86,10 @@ const EmailField = ({onChangeEmail}) => {
           </View>
         )}
       </View>
-      {errors.email && touched.email &&
+      {errors.username && touched.username &&
         <View style={{paddingTop: 4 ,paddingBottom: 20}}>
           <Text style={styles.errorText}>
-            {errors.email.toString()}
+            {errors.username.toString()}
           </Text>
         </View>
       }
@@ -97,4 +97,4 @@ const EmailField = ({onChangeEmail}) => {
   )
 };
 
-export default EmailField
+export default UsernameField

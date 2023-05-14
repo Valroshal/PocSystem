@@ -1,4 +1,27 @@
-import * as axios from 'axios'
+import axios from 'axios'
+import fetch from 'isomorphic-fetch';
+
+export const userLogin = async (username, password) => {
+  const data = JSON.stringify({
+    username,
+    password,
+  })
+
+  const url = 'http://127.0.0.1:8000/user/'
+  const mockUrl = 'http://localhost:8000/get_products/'
+  return await fetch(mockUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      //body: data,
+    }
+  )
+    .then(response => response.json())
+    .catch(error => {
+      console.log(error);
+    });
+};
 
 export const fetchProducts = async () => {
   try {
@@ -21,14 +44,24 @@ export const updateProducts = async ( id, favorite) => {
   }
 }
 
-export const userLogin = async (email, password) => {
-  try {
-    const res = await axios.post('http://127.0.0.1:8000/user/', {
-      email: email,
-      password: password
-    })
-    return res.data
-  } catch (error) {
-    return error.message
-  }
-}
+// export const userLogin = async (username, password) => {
+//   try {
+//     console.log(typeof axios)
+//     const res = await axios.post('http://127.0.0.1:8000/user/',
+//       {
+//         username: username,
+//         password: password
+//       },
+//       {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//       }
+//     )
+//
+//     return res.data
+//   } catch (error) {
+//     return error.message
+//   }
+// }

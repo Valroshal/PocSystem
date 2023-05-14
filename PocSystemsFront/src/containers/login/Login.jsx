@@ -4,7 +4,7 @@ import {Formik} from 'formik'
 //import { UseGetUserInfo } from "../../queries/loginQuery"
 import {useCallback, useEffect, useState} from "react"
 import {useNavigation} from "@react-navigation/native"
-import EmailField from "./components/EmailField";
+import UsernameField from "./components/UsernameField";
 import PasswordField from "./components/PasswordField";
 import { LoginSchema } from "./loginUtils";
 import LoginButton from "./components/LoginButton";
@@ -83,14 +83,15 @@ const Login = () => {
 
   const  navigation  = useNavigation()
 
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loginError, setLoginError] = useState('')
 
   const onSubmitSend = useCallback(async (values) => {
-    console.log('onSubmit');
+    console.log('onSubmit' , values);
     if (values) {
-      await userLogin(values.email, values.password).then(res => {
+      await userLogin(values.username, values.password).then(res => {
+        console.log('res', res);
           if (res) {
             navigation.navigate("ListWrapper");
           } else {
@@ -113,7 +114,7 @@ const Login = () => {
           Please enter your credentials to enter
         </Text>
         <Formik
-          initialValues={{ email: '', password: '' }}
+          initialValues={{ username: '', password: '' }}
           validationSchema={LoginSchema}
           onSubmit={(values) => {
             onSubmitSend(values).then()
@@ -121,9 +122,9 @@ const Login = () => {
         >
           {({handleSubmit, errors, touched}) => (
             <>
-              <EmailField
+              <UsernameField
                 onChangeEmail={(val) => {
-                  setEmail(val)
+                  setUsername(val)
                   setLoginError('')
                 }}
               />
@@ -136,7 +137,7 @@ const Login = () => {
               <View style={{paddingTop: 5}}>
                 <LoginButton
                   onPressButton={handleSubmit}
-                  //isDisabled={(!errors.password && !errors.email && touched.email && touched.password )}
+                  isDisabled={!(!errors.password && !errors.username && touched.username && touched.password )}
                 />
               </View>
             </>

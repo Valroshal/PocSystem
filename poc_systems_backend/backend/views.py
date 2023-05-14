@@ -45,7 +45,7 @@ class ProductApi(APIView):
             if products is None:
                 return Response(
                     data=[],
-                    status=status.HTTP_200_OK
+                    status=status.HTTP_204_NO_CONTENT
                 )
 
             return Response(

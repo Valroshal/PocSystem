@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'backend',
     'backend.user.apps.UserAppConfig',
-    'backend.product.apps.ProductAppConfig',
+    # 'backend.product.apps.ProductAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -58,7 +58,16 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'poc_systems_backend.urls'
+
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:8081',

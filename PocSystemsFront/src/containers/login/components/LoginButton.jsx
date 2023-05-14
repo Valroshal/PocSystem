@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
   }
 })
 const LoginButton = ({onPressButton, isDisabled}) => {
+
   return(
     <TouchableOpacity
       disabled={isDisabled}
