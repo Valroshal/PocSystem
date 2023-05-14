@@ -31,18 +31,19 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'backend',
+    'backend.user.apps.UserAppConfig',
+    'backend.product.apps.ProductAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'backend',
     'django.contrib.postgres',
     'django.contrib.postgres.fields',
     'rest_framework',
     'corsheaders',
-    'backend.user.apps.UserAppConfig',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Set the user model to your custom User model
+# AUTH_USER_MODEL = 'user.User'
+
+# Add the authentication backend for email-based authentication
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# Specify the URL to redirect users to after successful login
+LOGIN_REDIRECT_URL = '/dashboard/'
+
+# Specify the URL to redirect users to if login is required
+LOGIN_URL = '/login/'

@@ -3,8 +3,11 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import BaseUserManager
+from django.contrib.auth.hashers import make_password
 
 from backend.product.services.product_service import ProductService
+from backend.user.models import User
 from backend.user.services.user_service import UserService
 
 
@@ -66,11 +69,17 @@ class UserApi(APIView):
     def post(self, request):
         try:
             if request.method == 'POST':
-                email = request.POST['email']
-                password = request.POST['password']
+                # password = '12345'
+                # hashed_password = make_password(password)
 
+                # POST request
+
+                username = request.data.get('username')
+                password = request.data.get('password')
+                # user1 = User.objects.get(email=email)
+                # match = user1.check_password(password)
                 # Use authenticate() to check the user's credentials
-                user = authenticate(request, email=email, password=password)
+                user = authenticate(request, username=username, password=password)
 
                 if user is not None:
                     # User exists with the provided credentials
