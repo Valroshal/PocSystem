@@ -1,15 +1,12 @@
 import decimal
-import logging
 
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db import transaction
-from django.db.models import Q
 
 from backend.product.models.product import Product
 from backend.product.serializers.product_json import ProductJson
 from backend.core.base_manager import BaseManager
 
-logger = logging.getLogger(__name__)
 
 
 class ProductService(BaseManager):
@@ -17,7 +14,6 @@ class ProductService(BaseManager):
         try:
             super().__init__(model=Product)
         except Exception as ex:
-            logger.error(str(ex), exc_info=True)
             raise ex
 
     @transaction.atomic

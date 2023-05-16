@@ -8,42 +8,12 @@ from backend.user.services.user_service import UserService
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from backend.product.models.product import Product
 
 import json
 
 # Create your views here.
 class ProductApi(APIView):
     renderer_classes = [renderers.JSONRenderer]
-
-    def post(self, request):
-        try:
-            pr_id = request.data.get('pr_id')
-            name = request.data.get('name')
-            description = request.data.get('description')
-            price = request.data.get('price')
-            quantity = request.data.get('quantity')
-            favorite = request.data.get('favorite')
-            ProductService().create()
-
-            print('successfully created')
-            return Response(
-                status=status.HTTP_200_OK
-            )
-
-
-        except ValidationError as ex:
-            print('error', ex)
-            return Response(
-                data=str(ex),
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        except Exception as ex:
-            print('error', ex)
-            return Response(
-                data=str(ex),
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
 
     def put(self, request):
         try:

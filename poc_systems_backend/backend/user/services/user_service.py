@@ -1,5 +1,3 @@
-import logging
-
 from django.contrib.auth.models import User
 from rest_framework import status, request
 from rest_framework.authtoken.models import Token
@@ -11,7 +9,6 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from backend.core.base_manager import BaseManager
 
 from datetime import datetime
-logger = logging.getLogger(__name__)
 
 
 class UserService(BaseManager):
@@ -19,7 +16,6 @@ class UserService(BaseManager):
         try:
             super().__init__(model=User)
         except Exception as ex:
-            logger.error(str(ex), exc_info=True)
             raise ex
 
     def get_by_username(
@@ -53,7 +49,6 @@ class UserService(BaseManager):
         except ObjectDoesNotExist:
             return None
         except Exception as ex:
-            logger.error(str(ex), exc_info=True)
             raise ex
 
     def is_valid_token(self, date):
@@ -80,5 +75,4 @@ class UserService(BaseManager):
         except ObjectDoesNotExist:
             return None
         except Exception as ex:
-            logger.error(str(ex), exc_info=True)
             raise ex
