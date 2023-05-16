@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from "axios"
+import * as consts from "../consts/consts";
 export const saveTokenToStorage = async (token) => {
   try {
     await AsyncStorage.setItem('token', token)
@@ -14,7 +15,7 @@ export const retrieveTokenFromStorage = async () => {
     const token = await AsyncStorage.getItem('token')
     if (token) {
       const isValid = await checkTokenValidity(token)
-      if (isValid === 200) {
+      if (isValid === consts.SUCCESS) {
         console.log('Token retrieved from local storage:', token)
         return isValid
       } else {

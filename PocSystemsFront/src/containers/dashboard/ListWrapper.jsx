@@ -21,14 +21,13 @@ const ListWrapper = () => {
   const [initialProducts, setInitialProducts] = useState([])
   const [filteredProducts, setFilteredProducts] = useState([])
 
-
   useEffect( () => {
     handleFetchProducts().then()
   }, [])
 
   const handleFetchProducts = async () => {
     const pr = await fetchProducts()
-    setInitialProducts(pr)
+    setInitialProducts(Array.from(pr))
     setFilteredProducts(pr)
   }
 
@@ -39,11 +38,12 @@ const ListWrapper = () => {
   const handleSearch = useCallback((text) => {
     if (text === '') {
       setFilteredProducts(initialProducts)
+    } else {
+      let products = filteredProducts.filter(item => {
+        return item.name.includes(text)
+      })
+      setFilteredProducts(products)
     }
-    let products = filteredProducts.filter(item => {
-      return item.name.includes(text)
-    })
-    setFilteredProducts(products)
   }, [filteredProducts, initialProducts])
 
   const handleDelete = useCallback(() => {
@@ -51,7 +51,7 @@ const ListWrapper = () => {
   }, [])
 
 
-  if (filteredProducts.length < 1) { //TODO return text empty list
+  if (filteredProducts.length < 1) {
     return null
   }
 

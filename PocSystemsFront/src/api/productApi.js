@@ -1,5 +1,6 @@
 import axios from "axios"
 import { saveTokenToStorage } from "../localStorage/localStorageUtils"
+import * as consts from "../consts/consts";
 
 export const userLogin = async (username, password) => {
   const data = JSON.stringify({
@@ -11,7 +12,7 @@ export const userLogin = async (username, password) => {
 
   try {
     const res = await axios.post(url, data)
-    if (res.status === 200) {
+    if (res.status === consts.SUCCESS) {
       await saveTokenToStorage(res.data.token)
     }
     return res.data.token

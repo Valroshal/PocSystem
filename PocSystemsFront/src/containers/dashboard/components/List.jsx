@@ -17,6 +17,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     width: '100%',
   },
+  scrollView: {
+    height: '90%',
+    width: '100%',
+    alignSelf: 'center',
+  },
+  contentContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 30,
+
+  }
 })
 const List = ({ products, onFavorite, onDelete }) => {
 
@@ -31,9 +42,10 @@ const List = ({ products, onFavorite, onDelete }) => {
   }
 
   return(
-
-      <View style={styles.container}>
-        <ScrollView contentContainerStyle={{flex: 1}}>
+        <ScrollView style={styles.scrollView}
+                    contentContainerStyle={styles.contentContainer}
+        >
+          <View style={styles.container}>
           {products && products.map((item, index) => (
             <View style={styles.itemContainer} key={item.id}>
               <ProductItem
@@ -43,8 +55,9 @@ const List = ({ products, onFavorite, onDelete }) => {
               />
             </View>
           ))}
+          </View>
         </ScrollView>
-      </View>
+
 
   )
 }

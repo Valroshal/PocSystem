@@ -30,7 +30,7 @@ const SearchBar = ({ onSearch }) => {
   const [searchText, setSearchText] = useState('')
 
   const handleSearch = () => {
-    console.log('handle search')
+    console.log('handle search', typeof searchText)
     onSearch(searchText)
   }
 
@@ -38,7 +38,7 @@ const SearchBar = ({ onSearch }) => {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Search..."
+        placeholder="Search by product name..."
         value={searchText}
         onChangeText={setSearchText}
       />

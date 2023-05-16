@@ -5,6 +5,7 @@ import Star from '../../assets/images/star.png'
 import { useCallback, useState } from "react";
 import ProductScreen from "./ProductScreen";
 import { deleteProduct, fetchProducts, updateProducts } from "../../api/productApi";
+import * as consts from "../../consts/consts";
 
 const styles = StyleSheet.create({
   container: {
@@ -51,7 +52,7 @@ const ProductItem = ({ product, onDelete, onFavorite }) => {
   const handleFavorite = useCallback(async () => {
     const favorite = !product.favorite
     updateProducts(product.id, favorite).then(res => {
-      if (res === 200) {
+      if (res === consts.SUCCESS) {
         onFavorite()
       }
     })
@@ -59,7 +60,7 @@ const ProductItem = ({ product, onDelete, onFavorite }) => {
 
   const handleDelete = useCallback(async () => {
     deleteProduct(product.id).then(res => {
-      if (res === 200) {
+      if (res === consts.SUCCESS) {
         onDelete()
       }
     })

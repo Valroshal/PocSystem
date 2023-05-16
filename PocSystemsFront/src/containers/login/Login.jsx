@@ -9,6 +9,7 @@ import { LoginSchema } from "./loginUtils"
 import LoginButton from "./components/LoginButton"
 import { userLogin } from "../../api/productApi"
 import { retrieveTokenFromStorage } from "../../localStorage/localStorageUtils"
+import * as consts from "../../consts/consts";
 
 const styles = StyleSheet.create({
   container: {
@@ -88,25 +89,19 @@ const Login = () => {
   const [loginError, setLoginError] = useState('')
 
   useEffect(() => {
-    const res = handleLoggedInUser()
-    console.log("handleLoggedInUser then", res)
-    if (typeof res === 'string') {
-      navigation.navigate("ListWrapper")
-    }
-  },[navigation])
+    handleLoggedInUser().then()
+  },[])
 
   const handleLoggedInUser = async() => {
     const res = await retrieveTokenFromStorage()
-    if (res === 200) {
+    if (res === consts.SUCCESS) {
       navigation.navigate("ListWrapper")
     }
   }
 
   const onSubmitSend = useCallback(async (values) => {
-    console.log('onSubmit' , values);
     if (values) {
       const res = await userLogin(values.username, values.password)
-      console.log('res', res)
       if (typeof res === 'string') {
         navigation.navigate("ListWrapper")
       } else {
@@ -133,7 +128,7 @@ const Login = () => {
             onSubmitSend(values).then()
           }}
         >
-          {({handleSubmit, errors, touched}) => (
+          {({handleSubmit, touched}) => (
             <>
               <UsernameField
                 onChangeEmail={(val) => {
