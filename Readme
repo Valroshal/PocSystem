@@ -1,3 +1,6 @@
 1. Please run project on your localhost backend and frontend
 2. frontend texsted on android
 3. to make requests to server please use your ip. Please change variable MY_IP to your ip.
+4. authenticated user to login is: 
+  username: val
+  password: 12345
