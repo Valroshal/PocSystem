@@ -25,5 +25,8 @@ urlpatterns = [
     path('get_products/', views.ProductApi.as_view()),
     path('update_product/', views.ProductApi.as_view()),
     path('user/', views.UserApi.as_view()),
+    path('validate_token/', views.UserApi.as_view()),
+    path('delete_product/<int:pk>', views.ProductApi.as_view()),
+    path('', views.HomeApi.as_view())
 
 ]

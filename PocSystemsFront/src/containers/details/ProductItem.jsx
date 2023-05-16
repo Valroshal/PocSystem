@@ -2,8 +2,9 @@ import * as React from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import ItemButton from "./components/ItemButton";
 import Star from '../../assets/images/star.png'
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import ProductScreen from "./ProductScreen";
+import { deleteProduct, fetchProducts, updateProducts } from "../../api/productApi";
 
 const styles = StyleSheet.create({
   container: {
@@ -47,6 +48,23 @@ const styles = StyleSheet.create({
 const ProductItem = ({ product, onDelete, onFavorite }) => {
   const [modalVisible, setModalVisible] = useState(false)
 
+  const handleFavorite = useCallback(async () => {
+    const favorite = !product.favorite
+    updateProducts(product.id, favorite).then(res => {
+      if (res === 200) {
+        onFavorite()
+      }
+    })
+  }, [onFavorite, product.favorite, product.id])
+
+  const handleDelete = useCallback(async () => {
+    deleteProduct(product.id).then(res => {
+      if (res === 200) {
+        onDelete()
+      }
+    })
+  }, [onDelete, product.id])
+
   const toggleModal = () => {
     setModalVisible(!modalVisible)
   }
@@ -68,13 +86,13 @@ const ProductItem = ({ product, onDelete, onFavorite }) => {
       <ItemButton
         name={'Delete Item'}
         color={'red'}
-        onPressButton={onDelete}
+        onPressButton={handleDelete}
       />
       <ProductScreen
         product={product}
         isOpen={modalVisible}
         onDelete={onDelete}
-        onFavorite={onFavorite}
+        onFavorite={handleFavorite}
         onClose={toggleModal}
       />
     </TouchableOpacity>

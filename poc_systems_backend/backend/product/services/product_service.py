@@ -23,6 +23,7 @@ class ProductService(BaseManager):
     @transaction.atomic
     def create(
             self,
+            pr_id: str,
             name: str,
             description: str,
             price: decimal,
@@ -30,9 +31,17 @@ class ProductService(BaseManager):
             favorite: bool,
     ):
         try:
-
+            print(
+                'id=',pr_id,
+                'name=',name,
+                'description=',description,
+                'price=',price,
+                'quantity=',quantity,
+                'favorite=',favorite
+            )
             # create product
             product = super().create(
+                id=pr_id,
                 name=name,
                 description=description,
                 price=price,
@@ -45,7 +54,6 @@ class ProductService(BaseManager):
             return user_json
 
         except Exception as ex:
-            logger.error(str(ex), exc_info=True)
             raise ex
 
     def update_favorite(
@@ -54,6 +62,7 @@ class ProductService(BaseManager):
             product_id: str,
     ):
         try:
+            print("updating product with id", id)
             if favorite is None:
                 raise ValidationError('favorite value not found')
 
@@ -64,15 +73,15 @@ class ProductService(BaseManager):
                 model_id=product_id,
                 favorite=favorite,
             )
+            print("Product service: updated item", product_id)
 
         except Exception as ex:
-            logger.error(str(ex), exc_info=True)
             raise ex
 
     def get_by_id(
             self,
             product_id,
-    ) -> [ProductJson, None]:
+    ):
         try:
             product = super().get_by_id(model_id=product_id)
 
@@ -86,7 +95,6 @@ class ProductService(BaseManager):
         except ObjectDoesNotExist:
             return None
         except Exception as ex:
-            logger.error(str(ex), exc_info=True)
             raise ex
 
     def get_all(self):
@@ -116,5 +124,22 @@ class ProductService(BaseManager):
         except ObjectDoesNotExist:
             return None
         except Exception as ex:
-            logger.error(str(ex), exc_info=True)
+            raise ex
+
+    def delete_product(self, product_id):
+        try:
+            if not product_id:
+                raise ValidationError('product_id not found')
+
+            print('product id', product_id)
+            product = Product.objects.get(id=product_id)
+            print('product', product)
+
+            product.delete()
+
+            print("Product service: deleted item", product_id)
+
+        except ObjectDoesNotExist:
+            return None
+        except Exception as ex:
             raise ex

@@ -1,7 +1,6 @@
 import * as React from 'react'
-import { StyleSheet, View, Text } from "react-native";
-import ProductItem from "../../details/ProductItem";
-import { useCallback } from "react";
+import { StyleSheet, View, Text, ScrollView } from "react-native"
+import ProductItem from "../../details/ProductItem"
 
 const styles = StyleSheet.create({
   container: {
@@ -19,16 +18,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 })
-const List = ({ products }) => {
-
-  //console.log('products', products);
-  const handleDelete = useCallback(() => {
-    console.log('delete')
-  }, [])
-
-  const handleFavorite = useCallback(() => {
-
-  }, [])
+const List = ({ products, onFavorite, onDelete }) => {
 
   if (!products) {
     return(
@@ -41,17 +31,21 @@ const List = ({ products }) => {
   }
 
   return(
-    <View style={styles.container}>
-      {products && products.map((item, index) => (
-        <View style={styles.itemContainer} key={item.id}>
-          <ProductItem
-            product={item}
-            onDelete={handleDelete}
-            onFavorite={handleFavorite}
-          />
-        </View>
-      ))}
-    </View>
+
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={{flex: 1}}>
+          {products && products.map((item, index) => (
+            <View style={styles.itemContainer} key={item.id}>
+              <ProductItem
+                product={item}
+                onDelete={onDelete}
+                onFavorite={onFavorite}
+              />
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+
   )
 }
 

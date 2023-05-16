@@ -1,5 +1,5 @@
-import axios from 'axios'
-import fetch from 'isomorphic-fetch';
+import axios from "axios"
+import { saveTokenToStorage } from "../localStorage/localStorageUtils"
 
 export const userLogin = async (username, password) => {
   const data = JSON.stringify({
@@ -7,25 +7,23 @@ export const userLogin = async (username, password) => {
     password,
   })
 
-  const url = 'http://127.0.0.1:8000/user/'
-  const mockUrl = 'http://localhost:8000/get_products/'
-  return await fetch(mockUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      //body: data,
+  const url = 'http://10.100.102.16:8000/user/'
+
+  try {
+    const res = await axios.post(url, data)
+    if (res.status === 200) {
+      await saveTokenToStorage(res.data.token)
     }
-  )
-    .then(response => response.json())
-    .catch(error => {
-      console.log(error);
-    });
-};
+    return res.data.token
+  } catch (error) {
+    return error.message
+  }
+}
+
 
 export const fetchProducts = async () => {
   try {
-    const res = await axios.get('http://127.0.0.1:8000/get_products/')
+    const res = await axios.get('http://10.100.102.16:8000/get_products/')
     return res.data
   } catch (error) {
     return error.message
@@ -34,34 +32,23 @@ export const fetchProducts = async () => {
 
 export const updateProducts = async ( id, favorite) => {
   try {
-    const res = await axios.put('http://127.0.0.1:8000/get_products/', {
+    const res = await axios.put('http://10.100.102.16:8000/update_product/', {
       id:id,
       favorite:favorite
     })
-    return res.data
+    return res.status
   } catch (error) {
     return error.message
   }
 }
 
-// export const userLogin = async (username, password) => {
-//   try {
-//     console.log(typeof axios)
-//     const res = await axios.post('http://127.0.0.1:8000/user/',
-//       {
-//         username: username,
-//         password: password
-//       },
-//       {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//       }
-//     )
-//
-//     return res.data
-//   } catch (error) {
-//     return error.message
-//   }
-// }
+export const deleteProduct = async (id) => {
+  console.log('id', id)
+
+  try {
+    const res = await axios.delete(`http://10.100.102.16:8000/delete_product/${id}`)
+    return res.status
+  } catch (error) {
+    return error.message
+  }
+}

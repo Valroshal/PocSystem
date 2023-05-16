@@ -58,11 +58,11 @@ const styles = StyleSheet.create({
 })
 
 const UsernameField = ({onChangeEmail}) => {
-  const {handleBlur, handleChange, values, errors, touched } = useFormikContext();
+  const {handleBlur, handleChange, values, errors, touched } = useFormikContext()
 
   useEffect(() => {
     onChangeEmail(values.username)
-  },[onChangeEmail, values.username]);
+  },[onChangeEmail, values.username])
 
   return (
     <View>

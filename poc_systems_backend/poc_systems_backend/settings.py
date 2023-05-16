@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'django.contrib.postgres.fields',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
 ]
 
@@ -60,6 +61,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'poc_systems_backend.urls'
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_PRIVATE_NETWORK: True
+
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
@@ -67,11 +70,6 @@ CORS_ALLOW_METHODS = [
     'PATCH',
     'POST',
     'PUT',
-]
-
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:8081',
-    'https://example.com',
 ]
 
 TEMPLATES = [
@@ -162,3 +160,9 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 
 # Specify the URL to redirect users to if login is required
 LOGIN_URL = '/login/'
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Configure django-heroku
+import django_heroku
+django_heroku.settings(locals())

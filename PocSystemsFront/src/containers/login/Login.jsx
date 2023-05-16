@@ -1,14 +1,14 @@
 import * as React from 'react'
-import { StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle} from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import {Formik} from 'formik'
-//import { UseGetUserInfo } from "../../queries/loginQuery"
 import {useCallback, useEffect, useState} from "react"
 import {useNavigation} from "@react-navigation/native"
-import UsernameField from "./components/UsernameField";
-import PasswordField from "./components/PasswordField";
-import { LoginSchema } from "./loginUtils";
-import LoginButton from "./components/LoginButton";
-import { userLogin } from "../../api/productApi";
+import UsernameField from "./components/UsernameField"
+import PasswordField from "./components/PasswordField"
+import { LoginSchema } from "./loginUtils"
+import LoginButton from "./components/LoginButton"
+import { userLogin } from "../../api/productApi"
+import { retrieveTokenFromStorage } from "../../localStorage/localStorageUtils"
 
 const styles = StyleSheet.create({
   container: {
@@ -87,18 +87,31 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [loginError, setLoginError] = useState('')
 
+  useEffect(() => {
+    const res = handleLoggedInUser()
+    console.log("handleLoggedInUser then", res)
+    if (typeof res === 'string') {
+      navigation.navigate("ListWrapper")
+    }
+  },[navigation])
+
+  const handleLoggedInUser = async() => {
+    const res = await retrieveTokenFromStorage()
+    if (res === 200) {
+      navigation.navigate("ListWrapper")
+    }
+  }
+
   const onSubmitSend = useCallback(async (values) => {
     console.log('onSubmit' , values);
     if (values) {
-      await userLogin(values.username, values.password).then(res => {
-        console.log('res', res);
-          if (res) {
-            navigation.navigate("ListWrapper");
-          } else {
-            setLoginError("incorrect credentials");
-          }
-        }
-      )
+      const res = await userLogin(values.username, values.password)
+      console.log('res', res)
+      if (typeof res === 'string') {
+        navigation.navigate("ListWrapper")
+      } else {
+        setLoginError("incorrect credentials")
+      }
     }
   }, [navigation])
 
@@ -137,7 +150,7 @@ const Login = () => {
               <View style={{paddingTop: 5}}>
                 <LoginButton
                   onPressButton={handleSubmit}
-                  isDisabled={!(!errors.password && !errors.username && touched.username && touched.password )}
+                  isDisabled={!(touched.username || touched.password )}
                 />
               </View>
             </>

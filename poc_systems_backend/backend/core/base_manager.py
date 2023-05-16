@@ -117,21 +117,3 @@ class BaseManager(object):
             raise ex
         except Exception as ex:
             raise ex
-
-    def delete(
-            self,
-            model_id: any,
-    ):
-        try:
-            if not model_id:
-                raise ValidationError('model_id empty')
-
-            delete_obj = self.model.objects.filter(pk=model_id).last()
-            delete_obj.is_deleted = True
-            delete_obj.save()
-
-        except ValidationError as ex:
-            raise ex
-        except Exception as ex:
-            raise ex
-

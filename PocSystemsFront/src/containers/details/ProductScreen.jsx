@@ -1,15 +1,12 @@
 import * as React from 'react'
-import { Image, Modal, StyleSheet, Text, View } from "react-native";
-import Star from "../../assets/images/star.png";
-import ItemButton from "./components/ItemButton";
-import { useEffect, useState } from "react";
+import { Image, Modal, StyleSheet, Text, View } from "react-native"
+import Star from "../../assets/images/star.png"
+import ItemButton from "./components/ItemButton"
 
 const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
-    //justifyContent: "flex-start",
-    //alignItems: "flex-start",
     padding: 20,
     backgroundColor: '#fff',
     flex: 1,

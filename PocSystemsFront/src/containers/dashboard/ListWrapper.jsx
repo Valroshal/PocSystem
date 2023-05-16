@@ -1,11 +1,9 @@
 import * as React from 'react'
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import List from "./components/List";
-import ListButton from "./components/ListButton";
-import { useCallback, useEffect, useState } from "react";
-import SearchBar from "./components/SearchBar";
-import { useNavigation } from "@react-navigation/native";
-import { fetchProducts } from "../../api/productApi";
+import { useCallback, useEffect, useState } from "react"
+import SearchBar from "./components/SearchBar"
+import { fetchProducts } from "../../api/productApi"
 
 const styles = StyleSheet.create({
   container: {
@@ -19,64 +17,48 @@ const styles = StyleSheet.create({
   },
 })
 
-const products1 = [
-  {
-    id: 1,
-    name: 'broccoli',
-    description: 'food',
-    price: 10.99, //decimal ?
-    quantity: 5,
-    favorite: true
-  },
-  {
-    id: 2,
-    name: 'milk',
-    description: 'food',
-    price: 10.99, //decimal ?
-    quantity: 5,
-    favorite: true
-  },
-  {
-    id: 3,
-    name: 'materna',
-    description: 'baby',
-    price: 10.99, //decimal ?
-    quantity: 5,
-    favorite: false
-  },
-  ]
 const ListWrapper = () => {
+  const [initialProducts, setInitialProducts] = useState([])
+  const [filteredProducts, setFilteredProducts] = useState([])
 
-  // const  navigation  = useNavigation()
-  const [filteredProducts, setFilteredProducts] = useState(products1)
 
-
-  useEffect(() => {
-    console.log('in list wrapper')
-    const pr = fetchProducts().then()
-    //console.log('pr', pr);
-    //setFilteredProducts(pr)
+  useEffect( () => {
+    handleFetchProducts().then()
   }, [])
 
-  const handleAddButton = useCallback(() => {
-    console.log('add item')
+  const handleFetchProducts = async () => {
+    const pr = await fetchProducts()
+    setInitialProducts(pr)
+    setFilteredProducts(pr)
+  }
+
+  const handleFavorite = useCallback(() => {
+    handleFetchProducts().then()
   }, [])
 
   const handleSearch = useCallback((text) => {
-    let products = products1.filter(item => {
+    if (text === '') {
+      setFilteredProducts(initialProducts)
+    }
+    let products = filteredProducts.filter(item => {
       return item.name.includes(text)
     })
     setFilteredProducts(products)
-  }, [setFilteredProducts])
+  }, [filteredProducts, initialProducts])
 
-  if (filteredProducts.length < 1) {
+  const handleDelete = useCallback(() => {
+    handleFetchProducts().then()
+  }, [])
 
+
+  if (filteredProducts.length < 1) { //TODO return text empty list
+    return null
   }
 
   return(
     <View style={styles.container}>
       <SearchBar onSearch={(text) => handleSearch(text)}/>
-      <List products={products1}/>
+      <List products={filteredProducts} onFavorite={handleFavorite} onDelete={handleDelete}/>
     </View>
   )
 }
