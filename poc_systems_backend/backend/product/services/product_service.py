@@ -16,42 +16,6 @@ class ProductService(BaseManager):
         except Exception as ex:
             raise ex
 
-    @transaction.atomic
-    def create(
-            self,
-            pr_id: str,
-            name: str,
-            description: str,
-            price: decimal,
-            quantity: int,
-            favorite: bool,
-    ):
-        try:
-            print(
-                'id=',pr_id,
-                'name=',name,
-                'description=',description,
-                'price=',price,
-                'quantity=',quantity,
-                'favorite=',favorite
-            )
-            # create product
-            product = super().create(
-                id=pr_id,
-                name=name,
-                description=description,
-                price=price,
-                quantity=quantity,
-                favorite=favorite,
-            )
-
-            user_json = ProductJson.from_model(product)
-
-            return user_json
-
-        except Exception as ex:
-            raise ex
-
     def update_favorite(
             self,
             favorite: bool,
