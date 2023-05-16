@@ -33,8 +33,9 @@ export const retrieveTokenFromStorage = async () => {
 }
 
 const checkTokenValidity = async (token) => {
+  const url = consts.MY_IP + '/validate_token/'
   try {
-    const response = await axios.get('http://10.100.102.16:8000/validate_token/', {
+    const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
